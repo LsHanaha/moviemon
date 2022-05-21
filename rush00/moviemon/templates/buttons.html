@@ -31,15 +31,11 @@
     </div>
     <div class="main_buttons">
         <div class="select_button">
-            <form action="{{ buttons.select.link | default_if_none:'#' }}" method="post">
-                <button class="main_button" disabled="{{ buttons.select | default_if_none:'' }}" type="submit"></button>
-            </form>
+            <a class="main_button" href="{{ buttons.select | default_if_none:'#' }}"></a>
             select
         </div>
         <div class="start_button">
-            <form action="{{ buttons.start.link | default_if_none:'#' }}" method="post">
-                <button class="main_button" disabled="{{ buttons.start | default_if_none:'' }}" type="submit"></button>
-            </form>
+            <a class="main_button" href="{{ buttons.start | default_if_none:'#' }}"></a>
             start
         </div>
     </div>
