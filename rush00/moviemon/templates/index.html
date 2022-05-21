@@ -11,8 +11,10 @@
 </head>
 <body>
     <div class="gaget">
-        {% block content %}{% endblock %}
-        {% include 'buttons.html' %}
+        <div class="gaget_content">
+            {% block content %}{% endblock %}
+            {% include 'buttons.html' %}
+        </div>
     </div>
 </body>
 </html>

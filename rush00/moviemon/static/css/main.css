@@ -2,3 +2,21 @@
     padding: 0;
     margin: 0;
 }
+
+.gaget {
+    width: 100%;
+    height: 900px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: lightyellow;
+}
+
+.gaget_content {
+    width: 850px;
+    height: 700px;
+    display: flex;
+    background-color: orangered;
+    border-radius: 20px;
+    border: 4px solid black;
+}
