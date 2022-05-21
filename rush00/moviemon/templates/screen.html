@@ -1,4 +1,17 @@
+{% extends 'index.html' %}
 
-<div class="screen">
-    {%  block content %} {% endblock %}
-</div>
+{% block content %}
+    <div class="screen">
+        <div class="screen_content">
+            {% block screen_content_left %}
+                <div class="screen_content_left"></div>
+            {% endblock %}
+            {% block screen_content_main %}
+                <div class="screen_content_main"></div>
+            {% endblock %}
+            {% block screen_content_right %}
+                <div class="screen_content_right"></div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
