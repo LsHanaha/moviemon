@@ -1,0 +1,21 @@
+.titlescreen {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    background-color: red;
+}
+
+.titlescreen_title {
+    margin-top: 150px;
+    font-size: 100px;
+}
+
+.titlescreen_button_a {
+    font-size: 50px;
+}
+
+.titlescreen_button_b {
+    font-size: 50px;
+}

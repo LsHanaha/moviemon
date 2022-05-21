@@ -3,7 +3,8 @@ from django.shortcuts import render
 
 def title_screen(request):
     return render(request, "titlescreen.html", {
-        'buttons': {'A': {'link': '/worldmap', 'active': True}, 'B': {'link': '/options/load_game', 'active': True}}
+        'buttons': {'A': {'link': '/worldmap', 'active': True}, 'B': {'link': '/options/load_game', 'active': True}},
+        'title': 'Moviemon'
     })
 
 
