@@ -3,14 +3,14 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 100vw;
     height: 150px;
-    margin-top: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .buttons_container {
     background-color: lightgrey;
-    width: 800px;
+    width: 1200px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,7 +28,7 @@
     align-items: center;
     justify-content: center;
     border: 3px solid #424040;
-    margin-right: 100px;
+    margin-right: 200px;
     flex-direction: column;
 }
 
@@ -86,7 +86,7 @@
     font-size: 15px;
     text-transform: uppercase;
     color: white;
-    margin-right: 100px;
+    margin-right: 200px;
     border: 2px solid white;
     border-radius: 10px;
 }
