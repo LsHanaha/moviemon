@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/buttons.css' %}">
+    {% block style %} <link rel="stylesheet" href="{% static 'css/main.css' %}"> {% endblock %}
 </head>
 <body>
-
+    <div class="gaget">
+        {% block content %}{% endblock %}
+        {% include 'buttons.html' %}
+    </div>
 </body>
 </html>

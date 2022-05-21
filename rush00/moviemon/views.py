@@ -2,7 +2,9 @@ from django.shortcuts import render
 
 
 def title_screen(request):
-    pass
+    return render(request, "titlescreen.html", {
+        'buttons': {'A': '/worldmap', 'B': '/options/load'}
+    })
 
 
 def worldmap(request):

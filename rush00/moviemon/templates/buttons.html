@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
-</body>
-</html>
+<div class="buttons">
+    <div class="buttons_container">
+    <div class="arrows">
+        <div>
+            <form action="{{ buttons.arrow_top.link | default_if_none:'#' }}" method="post">
+                <button class="top_arrow arrow_button" disabled="{{ buttons.arrow_top | default_if_none:'' }}" type="submit">
+                    <i class="arrow"></i>
+                </button>
+            </form>
+        </div>
+        <div class="left_right_arrows">
+            <form action="{{ buttons.arrow_left.link | default_if_none:'#' }}" method="post">
+                <button class="left_arrow arrow_button" disabled="{{ buttons.arrow_left | default_if_none:'' }}" type="submit">
+                    <i class="arrow"></i>
+                </button>
+            </form>
+            <form action="{{ buttons.arrow_right.link | default_if_none:'#' }}" method="post">
+                <button class="right_arrow arrow_button" disabled="{{ buttons.arrow_right | default_if_none:'' }}" type="submit">
+                    <i class="arrow"></i>
+                </button>
+            </form>
+        </div>
+        <div>
+            <form action="{{ buttons.arrow_bottom.link | default_if_none:'#' }}" method="post">
+                <button class="bottom_arrow arrow_button" disabled="{{ buttons.arrow_bottom | default_if_none:'' }}" type="submit">
+                    <i class="arrow"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="main_buttons">
+        <div class="select_button">
+            <form action="{{ buttons.select.link | default_if_none:'#' }}" method="post">
+                <button class="main_button" disabled="{{ buttons.select | default_if_none:'' }}" type="submit"></button>
+            </form>
+            select
+        </div>
+        <div class="start_button">
+            <form action="{{ buttons.start.link | default_if_none:'#' }}" method="post">
+                <button class="main_button" disabled="{{ buttons.start | default_if_none:'' }}" type="submit"></button>
+            </form>
+            start
+        </div>
+    </div>
+    <div class="letter_buttons">
+        <div class="button_a">
+            <form action="{{ buttons.A.link | default_if_none:'#' }}" method="post">
+                <button class="letter_button" disabled="{{ buttons.A | default_if_none:'' }}" type="submit">A</button>
+            </form>
+        </div>
+        <div class="button_b">
+            <form action="{{ buttons.B.link | default_if_none:'#' }}" method="post">
+                <button class="letter_button" disabled="{{ buttons.B | default_if_none:'' }}" type="submit">B</button>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
