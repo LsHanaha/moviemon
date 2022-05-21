@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import typing
 
 
 def title_screen(request):
@@ -8,8 +9,21 @@ def title_screen(request):
     })
 
 
-def worldmap(request):
-    pass
+def worldmap(request, direction: typing.Optional[str] = None):
+
+    battle_active = False
+    if request.method == "GET":
+        # Start to create a new game for user
+        print("GETE\n\n")
+
+    return render(request, "worldmap.html", {
+        'buttons': {'A': {'link': '/worldmap', 'active': battle_active},
+                    'select': {'link': '/movindex'}, 'start': {'link': '/option'},
+                    'arrow_top': {'link': '/worldmap/up'}, 'arrow_left': {'link': '/worldmap/left'},
+                    'arrow_right': {'link': '/worldmap/right'}, 'arrow_bottom': {'link': '/worldmap/bottom'},
+                    },
+        "title": "Catch em all"
+    })
 
 
 def battle(request, moviemon_id: int):

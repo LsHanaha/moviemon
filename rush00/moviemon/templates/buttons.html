@@ -4,26 +4,32 @@
     <div class="arrows">
         <div>
             <form action="{{ buttons.arrow_top.link | default_if_none:'#' }}" method="post">
-                <button class="top_arrow arrow_button" {% if not buttons.arrow_top.active %}disabled{%endif%} type="submit">
+                {% csrf_token %}
+                <button class="top_arrow arrow_button" {% if not buttons.arrow_top %}disabled{%endif%} type="submit">
                     <i class="arrow"></i>
                 </button>
             </form>
         </div>
         <div class="left_right_arrows">
             <form action="{{ buttons.arrow_left.link | default_if_none:'#' }}" method="post">
-                <button class="left_arrow arrow_button" {% if not buttons.arrow_left.active %}disabled{%endif%} type="submit">
+                {% csrf_token %}
+                <button class="left_arrow arrow_button" {% if not buttons.arrow_left %}disabled{%endif%} type="submit">
                     <i class="arrow"></i>
                 </button>
             </form>
             <form action="{{ buttons.arrow_right.link | default_if_none:'#' }}" method="post">
-                <button class="right_arrow arrow_button" {% if not buttons.arrow_right.active %}disabled{%endif%} type="submit">
+                {% csrf_token %}
+
+                <button class="right_arrow arrow_button" {% if not buttons.arrow_right %}disabled{%endif%} type="submit">
                     <i class="arrow"></i>
                 </button>
             </form>
         </div>
         <div>
             <form action="{{ buttons.arrow_bottom.link | default_if_none:'#' }}" method="post">
-                <button class="bottom_arrow arrow_button" {% if not buttons.arrow_bottom.active %}disabled{%endif%} type="submit">
+                {% csrf_token %}
+
+                <button class="bottom_arrow arrow_button" {% if not buttons.arrow_bottom %}disabled{%endif%} type="submit">
                     <i class="arrow"></i>
                 </button>
             </form>
