@@ -1,4 +1,4 @@
-
+{%  with defaultHTTPmethod="get" %}
 <div class="buttons">
     <div class="buttons_container">
     <div class="arrows">
@@ -41,15 +41,16 @@
     </div>
     <div class="letter_buttons">
         <div class="button_a">
-            <form action="{{ buttons.A.link | default_if_none:'#' }}" method="post">
+            <form action="{{ buttons.A.link | default_if_none:'#' }}" method="{{ buttons.A.httpmethod | default:'get' }}">
                 <button class="letter_button" {% if not buttons.A.active %}disabled{%endif%} type="submit">A</button>
             </form>
         </div>
         <div class="button_b">
-            <form action="{{ buttons.B.link | default_if_none:'#' }}" method="post">
+            <form action="{{ buttons.B.link | default_if_none:'#' }}" method="{{ buttons.B.httpmethod | default:'get' }}">
                 <button class="letter_button" {% if not buttons.B.active %}disabled{%endif%} type="submit">B</button>
             </form>
         </div>
     </div>
     </div>
 </div>
+{% endwith %}
