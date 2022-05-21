@@ -4,26 +4,26 @@
     <div class="arrows">
         <div>
             <form action="{{ buttons.arrow_top.link | default_if_none:'#' }}" method="post">
-                <button class="top_arrow arrow_button" disabled="{{ buttons.arrow_top | default_if_none:'' }}" type="submit">
+                <button class="top_arrow arrow_button" {% if not buttons.arrow_top.active %}disabled{%endif%} type="submit">
                     <i class="arrow"></i>
                 </button>
             </form>
         </div>
         <div class="left_right_arrows">
             <form action="{{ buttons.arrow_left.link | default_if_none:'#' }}" method="post">
-                <button class="left_arrow arrow_button" disabled="{{ buttons.arrow_left | default_if_none:'' }}" type="submit">
+                <button class="left_arrow arrow_button" {% if not buttons.arrow_left.active %}disabled{%endif%} type="submit">
                     <i class="arrow"></i>
                 </button>
             </form>
             <form action="{{ buttons.arrow_right.link | default_if_none:'#' }}" method="post">
-                <button class="right_arrow arrow_button" disabled="{{ buttons.arrow_right | default_if_none:'' }}" type="submit">
+                <button class="right_arrow arrow_button" {% if not buttons.arrow_right.active %}disabled{%endif%} type="submit">
                     <i class="arrow"></i>
                 </button>
             </form>
         </div>
         <div>
             <form action="{{ buttons.arrow_bottom.link | default_if_none:'#' }}" method="post">
-                <button class="bottom_arrow arrow_button" disabled="{{ buttons.arrow_bottom | default_if_none:'' }}" type="submit">
+                <button class="bottom_arrow arrow_button" {% if not buttons.arrow_bottom.active %}disabled{%endif%} type="submit">
                     <i class="arrow"></i>
                 </button>
             </form>
@@ -42,12 +42,12 @@
     <div class="letter_buttons">
         <div class="button_a">
             <form action="{{ buttons.A.link | default_if_none:'#' }}" method="post">
-                <button class="letter_button" disabled="{{ buttons.A | default_if_none:'' }}" type="submit">A</button>
+                <button class="letter_button" {% if not buttons.A.active %}disabled{%endif%} type="submit">A</button>
             </form>
         </div>
         <div class="button_b">
             <form action="{{ buttons.B.link | default_if_none:'#' }}" method="post">
-                <button class="letter_button" disabled="{{ buttons.B | default_if_none:'' }}" type="submit">B</button>
+                <button class="letter_button" {% if not buttons.B.active %}disabled{%endif%} type="submit">B</button>
             </form>
         </div>
     </div>
