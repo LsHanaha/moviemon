@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.title_screen, name='title_screen'),
-    path('worldmap/new_game', views.worldmap, name='worldmap'),
+    path('worldmap/new_game/', views.worldmap, name='worldmap'),
     path('worldmap/<str:direction>', views.worldmap, name='worldmap'),
     path('worldmap/', views.worldmap, name='worldmap'),
     path('battle/<int:moviemon_id>', views.battle, name='battle'),

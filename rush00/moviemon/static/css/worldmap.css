@@ -1,3 +1,21 @@
 .worldmap_field {
+    z-index: 100;
+}
 
+.worldmap_content_left {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background-color: #77b277;
+    flex-direction: column;
+    align-items: center;
+}
+
+.worldmap_content_right {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background-color: #77b277;
+    flex-direction: column;
+    align-items: center;
 }
