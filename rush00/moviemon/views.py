@@ -61,7 +61,9 @@ def battle(request, moviemon_id: str):
                 current_game._movieballs_count -= 1
             else:
                 battle_text = f"Congrats, You catched {moviemon['Title']}! Press B to return to Worldmap!"
-                current_game._captured_movies.append(moviemon)
+                current_game._captured_movies.append(moviemon['imdbID'])
+                current_game._player_strength += 1
+                current_game.clear_cell()
                 check = 0
         else:
             battle_text = "Oooops! You're out of movieballs! Press B to return to Worldmap!"
@@ -171,10 +173,37 @@ def save(request, save_file_name: str = None):
 
     if request.method == 'POST' and save_file_name not in ['#', 'up', 'down']:
         if save_file_name == "0":
+            to_remove: str = None
+            for file_ in saves:
+                if not file_:
+                    continue
+                if file_['filename'].startswith('slotA'):
+                    to_remove = file_['filename']
+                    break
+            if to_remove:
+                os.remove(os.path.join(django_settings.BASE_DIR, 'moviemon', 'saves', to_remove))
             file = f"slotA_{current_game.get_current_score()}.mmg"
         elif save_file_name == "1":
+            to_remove: str = None
+            for file_ in saves:
+                if not file_:
+                    continue
+                if file_['filename'].startswith('slotB'):
+                    to_remove = file_['filename']
+                    break
+            if to_remove:
+                os.remove(os.path.join(django_settings.BASE_DIR, 'moviemon', 'saves', to_remove))
             file = f"slotB_{current_game.get_current_score()}.mmg"
         elif save_file_name == "2":
+            to_remove: str = None
+            for file_ in saves:
+                if not file_:
+                    continue
+                if file_['filename'].startswith('slotC'):
+                    to_remove = file_['filename']
+                    break
+            if to_remove:
+                os.remove(os.path.join(django_settings.BASE_DIR, 'moviemon', 'saves', to_remove))
             file = f"slotC_{current_game.get_current_score()}.mmg"
         game_storage.dump(current_game, file)
 

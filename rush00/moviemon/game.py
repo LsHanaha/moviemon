@@ -24,7 +24,7 @@ class Game:
         self._movieballs_count = movieballs_count
         self._moviemons: dict[str, dict] = moviemons
         self._enemies_count: int = 15
-        self._captured_movies = ["tt0329101", "tt0117342", "tt0810743", "tt0024216", "tt0107290"]
+        self._captured_movies = []
         self._game_map: typing.Optional[list[list[int]]] = None
         self._player_strength = 1
 
@@ -107,6 +107,10 @@ class Game:
         movie_key = random.choice(free_movies)
         random_movie = self._moviemons[movie_key]
         return random_movie
+
+    def clear_cell(self):
+        y_pos, x_pos = self._current_position
+        self._game_map[y_pos][x_pos] = 0
 
     def get_strength(self) -> int:
         return self._player_strength
