@@ -90,9 +90,8 @@ class Game:
         y_pos, x_pos = self._current_position
         if self._game_map[y_pos][x_pos] == self.MONSTER:
             movie = self.get_random_movie()
-            print(movie['imdbRating'])
             return {"action": {
-                "type": "monster", "monster_data": {'id': 1, 'strength': '2'},
+                "type": "monster", "monster_id": movie['imdbID'],
                 'message':
                     f'Monviemonster "{movie["Title"]}" found! '
                     f'{"Fight him!" if self._player_strength + 3 > float(movie["imdbRating"]) else "Run! Fly you fool!"}'}}

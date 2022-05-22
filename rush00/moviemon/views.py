@@ -13,7 +13,7 @@ def title_screen(request):
 
 def worldmap(request, direction: typing.Optional[str] = None):
 
-    battle_active = False
+    monster_id = False
     if request.method == "GET":
         # Start to create a new game for user
         if 'new_game' in request.path:
@@ -27,12 +27,12 @@ def worldmap(request, direction: typing.Optional[str] = None):
         if not action:
             action = {}
         if action.get('action', {}).get('type') == 'monster':
-            battle_active = True
+            monster_id = action['action'].get('monster_id')
     map_data = current_game.get_data_for_map()
     map_data = {**map_data, **action}
 
     return render(request, "worldmap.html", {
-        'buttons': {'A': {'link': '/worldmap', 'active': battle_active},
+        'buttons': {'A': {'link': f'/battle/{monster_id}', 'active': monster_id is not False},
                     'select': {'link': '/movindex'}, 'start': {'link': '/option'},
                     'arrow_top': {'link': '/worldmap/up'}, 'arrow_left': {'link': '/worldmap/left'},
                     'arrow_right': {'link': '/worldmap/right'}, 'arrow_bottom': {'link': '/worldmap/bottom'},
