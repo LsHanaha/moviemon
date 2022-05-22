@@ -92,6 +92,7 @@ class Game:
                                           f'{"Fight him!" if self._player_strength - 2 < 3 else "Run! Fly you fool!"}'}}
         if self._game_map[y_pos][x_pos] == self.POKEBALL:
             poke_count = random.randint(0, 20)
+            self._game_map[y_pos][x_pos] = 0
             self._movieballs_count += poke_count
             return {"action": {"type": "ball", 'message': f'Found {poke_count} movieballs!'}}
         return {}
@@ -119,12 +120,22 @@ class Game:
         GameManager.dump(self, filename)
 
     def get_data_for_map(self):
+        map_template = []
+        for i, row in enumerate(self._game_map):
+            new_row = []
+            for j, cell in enumerate(row):
+                if (i, j) == self._current_position:
+                    new_row.append(1)
+                else:
+                    new_row.append(0)
+            map_template.append(new_row)
+
         return {
             'map_data': {
                 'player_strength': self._player_strength,
                 'pokeballs': self._movieballs_count,
                 'captured': f"{len(self._captured_movies)} / {self._enemies_count}",
-                'field': self._game_map
+                'field': map_template
             }
         }
 

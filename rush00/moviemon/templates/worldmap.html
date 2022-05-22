@@ -25,6 +25,17 @@
 {% block screen_content_main %}
     <div class="screen_content_main">
         <div class="worldmap_field" style="background-image: url('{% static "images/forest.png"%}');">
+            {% for row in map_data.field %}
+                <div class="worldmap_field_row">
+                    {% for cell in row %}
+                        <div class="worldmap_field_cell">
+                            {% if cell == 1 %}
+                                <div class="worldmap_field_cell_ash" style="background-image: url('{% static "images/ash.png"%}');"></div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
 
         </div>
     </div>
