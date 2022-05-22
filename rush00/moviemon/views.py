@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import typing
 from .game import Game, game_storage, start_new_game
+import random
 
 
 def title_screen(request):
@@ -42,8 +43,33 @@ def worldmap(request, direction: typing.Optional[str] = None):
     })
 
 
-def battle(request, moviemon_id: int):
-    pass
+def battle(request, moviemon_id: str):
+    current_game: Game = game_storage.get_current_game()
+    moviemon = current_game._moviemons[moviemon_id]
+    luck = 50 - moviemon["imdbRating"] * 10 + current_game._player_strength * 5
+    check = 1
+    if luck < 1:
+        luck = 1
+    elif luck > 90:
+        luck = 90
+    if 'throw' in request.path:
+        if current_game._movieballs_count > 0:
+            if random.randint(0, 100) > luck:
+                battle_text = "Throw Failed! Try again!"
+                current_game._movieballs_count -= 1
+            else:
+                battle_text = f"Congrats, You catched {moviemon['Title']}! Press B to return to Worldmap!"
+                current_game._captured_movies.append(moviemon)
+                check = 0
+        else:
+            battle_text = "Oooops! You're out of movieballs! Press B to return to Worldmap!"
+            check = 0
+    else:
+        battle_text = f'{moviemon["Title"]} appeared!'
+    game_dict = {**moviemon, 'Luck': luck, 'Movieballs': current_game._movieballs_count, 'Battle_Text': battle_text, 'buttons': {'B': {'link': '/worldmap', 'active': True}}}
+    if check:
+        game_dict['buttons']['A'] = {'link': f'/battle/{moviemon_id}/throw', 'active': True}
+    return render(request, 'battle.html', game_dict)
 
 
 def moviedex(request):
