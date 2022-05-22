@@ -80,7 +80,7 @@ def moviedex(request):
                     },
         'title': 'Moviedex',
         'captured_movies': movies_to_show,
-        'selected': selected_id
+        'selected_movie_id': selected_id
     })
 
 
