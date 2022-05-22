@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import typing
-from game import Game, GameManager
+from .game import Game, start_new_game
 
 
 def title_screen(request):
@@ -15,7 +15,7 @@ def worldmap(request, direction: typing.Optional[str] = None):
     battle_active = False
     if request.method == "GET":
         # Start to create a new game for user
-        game = Game()
+        game = start_new_game()
 
     return render(request, "worldmap.html", {
         'buttons': {'A': {'link': '/worldmap', 'active': battle_active},
