@@ -46,13 +46,16 @@
         </div>
     </div>
     <div class="letter_buttons">
-        <div class="button_a">
+        <div class="button_a"></div>
+            {% csrf_token %}
             <form action="{{ buttons.A.link | default_if_none:'#' }}" method="{{ buttons.A.httpmethod | default:'get' }}">
+                            {% csrf_token %}
                 <button class="letter_button" {% if not buttons.A.active %}disabled{%endif%} type="submit">A</button>
             </form>
         </div>
         <div class="button_b">
             <form action="{{ buttons.B.link | default_if_none:'#' }}" method="{{ buttons.B.httpmethod | default:'get' }}">
+            {% csrf_token %}
                 <button class="letter_button" {% if not buttons.B.active %}disabled{%endif%} type="submit">B</button>
             </form>
         </div>

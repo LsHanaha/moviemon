@@ -107,14 +107,61 @@ def option(request):
     })
 
 
-def save(request):
-    # return render(request, "options.html", {
-    #     'buttons': {'A': {'link': '/options/save_game/', 'active': True, 'text': 'A - Save'},
-    #                 'B': {'link': '/', 'active': True, 'text': 'B - Quit'},
-    #                 'start': {'link': '/worldmap'}},
-    #     'title': 'Options'
-    # })
-    pass
+def save(request, save_file_name: str = None):
+
+    current_game = game_storage.get_current_game()
+    try:
+        current_game.selected_pos
+    except AttributeError:
+        current_game.selected_pos = 0
+
+    if save_file_name == 'up' and current_game.selected_pos > 0:
+        current_game.selected_pos -= 1
+    elif save_file_name == 'down' and current_game.selected_pos < 2:
+        current_game.selected_pos += 1
+
+    folder = os.path.join(django_settings.BASE_DIR, 'moviemon', 'saves')
+    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
+    saves = [None, None, None]
+    for file in files:
+        file_ = file.split('/')[-1]
+        if file_.startswith('slotA'):
+            score1 = file_.split('_')[1]
+            score2 = file_.split('_')[2].split('.')[0]
+            score = f"{score1}/{score2}"
+            saves[0] = {'filename': file_, 'name': f'Slot A: {score}'}
+        elif file_.startswith('slotB'):
+            score1 = file_.split('_')[1]
+            score2 = file_.split('_')[2].split('.')[0]
+            score = f"{score1}/{score2}"
+            saves[1] = {'filename': file_, 'name': f'Slot B: {score}'}
+        elif file_.startswith('slotC'):
+            score1 = file_.split('_')[1]
+            score2 = file_.split('_')[2].split('.')[0]
+            score = f"{score1}/{score2}"
+            saves[2] = {'filename': file_, 'name': f'Slot C: {score}'}
+
+    load_link = f"/options/save_game/{current_game.selected_pos}"
+
+    if request.method == 'POST' and save_file_name not in ['#', 'up', 'down']:
+        if save_file_name == "0":
+            file = f"slotA_{current_game.get_current_score()}.mmg"
+        elif save_file_name == "1":
+            file = f"slotB_{current_game.get_current_score()}.mmg"
+        elif save_file_name == "2":
+            file = f"slotC_{current_game.get_current_score()}.mmg"
+        game_storage.dump(current_game, file)
+
+    return render(request, "load.html", {
+        'buttons': {'A': {'link': load_link, 'active': True, 'httpmethod': 'post', 'text': "Save"},
+                    'B': {'link': '/options', 'active': True, 'text': 'Cancel'},
+                    'arrow_top': {'link': '/options/save_game/up', 'active': True},
+                    'arrow_bottom': {'link': '/options/save_game/down', 'active': True}
+                    },
+        'title': 'Save game',
+        'savefiles': saves,
+        'selected_file_pos': current_game.selected_pos
+    })
 
 
 def load(request, save_file_name: str = None):
@@ -141,33 +188,41 @@ def load(request, save_file_name: str = None):
     for file in files:
         file_ = file.split('/')[-1]
         if file_.startswith('slotA'):
-            score = file_.split('_')[1].split('.')[0]
+            score1 = file_.split('_')[1]
+            score2 = file_.split('_')[2].split('.')[0]
+            score = f"{score1}/{score2}"
             saves[0] = {'filename': file_, 'name': f'Slot A: {score}'}
         elif file_.startswith('slotB'):
-            score = file_.split('_')[1].split('.')[0]
+            score1 = file_.split('_')[1]
+            score2 = file_.split('_')[2].split('.')[0]
+            score = f"{score1}/{score2}"
             saves[1] = {'filename': file_, 'name': f'Slot B: {score}'}
         elif file_.startswith('slotC'):
-            score = file_.split('_')[1].split('.')[0]
+            score1 = file_.split('_')[1]
+            score2 = file_.split('_')[2].split('.')[0]
+            score = f"{score1}/{score2}"
             saves[2] = {'filename': file_, 'name': f'Slot C: {score}'}
 
     load_target = saves[current_game.selected_pos]['filename'] if saves[current_game.selected_pos] else "#"
     load_link = f"/options/load_game/{load_target}"
 
     a_text = " Load"
+    method = 'post'
     if request.method == 'POST' and save_file_name not in ['#', 'up', 'down']:
-        game = game_storage.load(os.path.join('saves', save_file_name))
+        game = game_storage.load(save_file_name)
         game_storage.set_current_game(game)
         load_link = '/worldmap'
         arrow_buttons_status = False
         a_text = "Start Game"
+        method = 'get'
 
     return render(request, "load.html", {
-        'buttons': {'A': {'link': load_link, 'active': True, 'method': 'post', 'text': a_text},
+        'buttons': {'A': {'link': load_link, 'active': True, 'httpmethod': method, 'text': a_text},
                     'B': {'link': '/', 'active': arrow_buttons_status},
                     'arrow_top': {'link': '/options/load_game/up', 'active': arrow_buttons_status},
                     'arrow_bottom': {'link': '/options/load_game/down', 'active': arrow_buttons_status}
                     },
-        'title': 'Options',
+        'title': 'Load game',
         'savefiles': saves,
         'selected_file_pos': current_game.selected_pos
     })

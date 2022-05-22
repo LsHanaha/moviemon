@@ -3,6 +3,7 @@
 
 {% block screen_content_main %}
     <div class="screen_content_main">
+       {% csrf_token %}
         <div class="moviedex_content">
             <div class="moviedex_title">Moviedex</div>
             {% for savefile in savefiles %}
@@ -12,7 +13,7 @@
             {% endfor %}
             <div class="movidex_buttons">
                 <div>A - {{ buttons.A.text }}</div>
-                <div>B - Title screen</div>
+                <div>B - {{ buttons.B.text|default:"Title screen" }} </div>
             </div>
         </div>
     </div>

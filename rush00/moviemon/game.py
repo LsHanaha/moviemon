@@ -158,6 +158,9 @@ class Game:
 
         GameManager.dump(self, filename)
 
+    def get_current_score(self):
+        return f"{len(self._captured_movies)}_{self._enemies_count}"
+
     def get_data_for_map(self) -> dict[str, any]:
         map_template = []
         for i, row in enumerate(self._game_map):
