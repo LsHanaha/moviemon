@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
+from django.conf import settings as django_settings
 import typing
 from .game import Game, game_storage, start_new_game
+import os
 
 
 def title_screen(request):
@@ -106,8 +108,66 @@ def option(request):
 
 
 def save(request):
+    # return render(request, "options.html", {
+    #     'buttons': {'A': {'link': '/options/save_game/', 'active': True, 'text': 'A - Save'},
+    #                 'B': {'link': '/', 'active': True, 'text': 'B - Quit'},
+    #                 'start': {'link': '/worldmap'}},
+    #     'title': 'Options'
+    # })
     pass
 
 
-def load(request):
-    pass
+def load(request, save_file_name: str = None):
+
+    current_game = game_storage.get_current_game()
+    if request.method == 'GET' and save_file_name is None:
+        current_game.selected_pos = 0
+
+    try:
+        current_game.selected_pos
+    except AttributeError:
+        current_game.selected_pos = 0
+
+    if save_file_name == 'up' and current_game.selected_pos > 0:
+        current_game.selected_pos -= 1
+    elif save_file_name == 'down' and current_game.selected_pos < 2:
+        current_game.selected_pos += 1
+
+    arrow_buttons_status = True
+
+    folder = os.path.join(django_settings.BASE_DIR, 'moviemon', 'saves')
+    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
+    saves = [None, None, None]
+    for file in files:
+        file_ = file.split('/')[-1]
+        if file_.startswith('slotA'):
+            score = file_.split('_')[1].split('.')[0]
+            saves[0] = {'filename': file_, 'name': f'Slot A: {score}'}
+        elif file_.startswith('slotB'):
+            score = file_.split('_')[1].split('.')[0]
+            saves[1] = {'filename': file_, 'name': f'Slot B: {score}'}
+        elif file_.startswith('slotC'):
+            score = file_.split('_')[1].split('.')[0]
+            saves[2] = {'filename': file_, 'name': f'Slot C: {score}'}
+
+    load_target = saves[current_game.selected_pos]['filename'] if saves[current_game.selected_pos] else "#"
+    load_link = f"/options/load_game/{load_target}"
+
+    a_text = " Load"
+    if request.method == 'POST' and save_file_name not in ['#', 'up', 'down']:
+        game = game_storage.load(os.path.join('saves', save_file_name))
+        game_storage.set_current_game(game)
+        load_link = '/worldmap'
+        arrow_buttons_status = False
+        a_text = "Start Game"
+
+    return render(request, "load.html", {
+        'buttons': {'A': {'link': load_link, 'active': True, 'method': 'post', 'text': a_text},
+                    'B': {'link': '/', 'active': arrow_buttons_status},
+                    'arrow_top': {'link': '/options/load_game/up', 'active': arrow_buttons_status},
+                    'arrow_bottom': {'link': '/options/load_game/down', 'active': arrow_buttons_status}
+                    },
+        'title': 'Options',
+        'savefiles': saves,
+        'selected_file_pos': current_game.selected_pos
+    })

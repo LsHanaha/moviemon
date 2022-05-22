@@ -196,7 +196,7 @@ class GameManager:
 
     @classmethod
     def load(cls, filename: str = "current"):
-        filepath = os.path.join(django_settings.BASE_DIR, 'moviemon', filename)
+        filepath = os.path.join(django_settings.BASE_DIR, 'moviemon', 'saves', filename)
         if not os.path.exists(filepath):
             with open(filepath, 'wb'):
                 pass
@@ -206,7 +206,7 @@ class GameManager:
 
     @classmethod
     def dump(cls, game: Game, filename="current") -> None:
-        filepath = os.path.join(django_settings.BASE_DIR, 'moviemon', filename)
+        filepath = os.path.join(django_settings.BASE_DIR, 'moviemon', 'saves', filename)
         with open(filepath, 'wb') as f:
             pickle.dump(game, f, protocol=pickle.HIGHEST_PROTOCOL)
 

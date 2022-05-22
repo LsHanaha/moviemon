@@ -11,6 +11,7 @@ urlpatterns = [
     path('moviedex/<str:moviemon>', views.detail, name='detail'),
     path('moviedex/', views.moviedex, name='moviedex'),
     path('options/save_game/', views.save, name='save_game'),
+    path('options/load_game/<str:save_file_name>', views.load, name='load_game'),
     path('options/load_game/', views.load, name='load_game'),
     path('options/', views.option, name='options'),
     # path('', views.title_screen, name='index'),
