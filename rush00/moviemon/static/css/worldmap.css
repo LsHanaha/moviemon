@@ -1,6 +1,29 @@
 .worldmap_field {
     height: 100%;
     width: 100%;
+    /*margin-top: 10px;*/
+    /*display: flex;*/
+    /*flex-direction: row;*/
+}
+
+.worldmap_field_row {
+    height: 47px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.worldmap_field_cell {
+    height: 47px;
+    width: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.worldmap_field_cell_ash {
+    height: 46px;
+    width: 46px;
 }
 
 .worldmap_content_left {
