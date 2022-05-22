@@ -24,7 +24,7 @@ class Game:
         self._movieballs_count = movieballs_count
         self._moviemons: dict[str, dict] = moviemons
         self._enemies_count: int = 15
-        self._captured_movies = ["tt0329101", "tt0117342", "tt0810743"]
+        self._captured_movies = ["tt0329101", "tt0117342", "tt0810743", "tt0024216", "tt0107290"]
         self._game_map: typing.Optional[list[list[int]]] = None
         self._player_strength = 1
 
@@ -124,11 +124,13 @@ class Game:
         res = []
         if captured_size > 3:
             movie_ids = []
-            movie_ids.extend(self._captured_movies[position_id - 1:position_id + 1])
+            movie_ids.extend(self._captured_movies[position_id - 1:position_id + 2])
             if len(res) != 3:
                 if position_id == captured_size - 1:
                     movie_ids.insert(0, self._captured_movies[position_id - 2])
                 elif position_id == 0:
+                    movie_ids.append(self._captured_movies[position_id])
+                    movie_ids.append(self._captured_movies[position_id + 1])
                     movie_ids.append(self._captured_movies[position_id + 2])
             for movie_id in movie_ids:
                 res.append(self._moviemons[movie_id])

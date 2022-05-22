@@ -18,6 +18,7 @@ def collect_imdb_data():
             continue
         try:
             data[film] = json.loads(res.text)
+            data[film]['rawRating'] = data[film]["imdbRating"]
             data[film]["imdbRating"] = round(float(data[film]["imdbRating"]))
         except json.decoder.JSONDecodeError as e:
             print(e)

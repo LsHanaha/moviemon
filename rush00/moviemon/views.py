@@ -73,7 +73,7 @@ def moviedex(request):
     movies_to_show = current_game.get_selected_previous_and_next_movie(selected_pos)
 
     return render(request, "moviedex.html", {
-        'buttons': {'A': {'link': f'/detai/{selected_id}/', 'active': True},
+        'buttons': {'A': {'link': f'/moviedex/{selected_id}', 'active': True},
                     'select': {'link': '/worldmap'},
                     'arrow_top': {'link': '/moviedex/up'},
                     'arrow_bottom': {'link': '/moviedex/down'}
@@ -87,7 +87,13 @@ def moviedex(request):
 def detail(request, moviemon: str):
     if moviemon in ['up', 'down']:
         return redirect(f'/moviedex?direction={moviemon}')
-    pass
+    current_game = game_storage.get_current_game()
+    movie = current_game.get_movie(moviemon)
+    return render(request, 'detail.html', {
+        'buttons': {'B': {'link': '/moviedex', 'active': True}},
+        'title': 'Detail',
+        'movie': movie
+    })
 
 
 def option(request):
