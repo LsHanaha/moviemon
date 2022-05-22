@@ -23,8 +23,9 @@ def worldmap(request, direction: typing.Optional[str] = None):
 
     action = {}
     if direction:
-        current_game.set_new_player_position(direction)
-        action = current_game.determine_action()
+        action = current_game.set_new_player_position(direction)
+        if not action:
+            action = {}
         if action.get('action', {}).get('type') == 'monster':
             battle_active = True
     map_data = current_game.get_data_for_map()
