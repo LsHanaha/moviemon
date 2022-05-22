@@ -64,7 +64,7 @@ class Game:
         self._game_map = game_map
         return
 
-    def set_new_player_position(self, direction: str):
+    def set_new_player_position(self, direction: str) -> typing.Optional[dict]:
         y_pos, x_pos = self._current_position
         if direction == 'up':
             y_pos -= 1
@@ -82,7 +82,9 @@ class Game:
             return
         self._current_position = (y_pos, x_pos)
 
-        return self.determine_action()
+        action = self.determine_action()
+        self.dump()
+        return action
 
     def determine_action(self) -> dict:
         y_pos, x_pos = self._current_position
