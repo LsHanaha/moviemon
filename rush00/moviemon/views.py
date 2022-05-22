@@ -33,7 +33,7 @@ def worldmap(request, direction: typing.Optional[str] = None):
 
     return render(request, "worldmap.html", {
         'buttons': {'A': {'link': f'/battle/{monster_id}', 'active': monster_id is not False},
-                    'select': {'link': '/movindex'}, 'start': {'link': '/option'},
+                    'select': {'link': '/movindex'}, 'start': {'link': '/options'},
                     'arrow_top': {'link': '/worldmap/up'}, 'arrow_left': {'link': '/worldmap/left'},
                     'arrow_right': {'link': '/worldmap/right'}, 'arrow_bottom': {'link': '/worldmap/bottom'},
                     },
@@ -55,7 +55,12 @@ def detail(request, moviemon: int):
 
 
 def option(request):
-    pass
+    return render(request, "options.html", {
+        'buttons': {'A': {'link': '/options/save_game/', 'active': True, 'text': 'A - Save'},
+                    'B': {'link': '/', 'active': True, 'text': 'B - Quit'},
+                    'start': {'link': '/worldmap'}},
+        'title': 'Options'
+    })
 
 
 def save(request):

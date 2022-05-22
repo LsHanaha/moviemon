@@ -10,8 +10,8 @@ urlpatterns = [
     path('battle/<int:moviemon_id>', views.battle, name='battle'),
     path('moviedex/<int:moviemon>', views.detail, name='detail'),
     path('moviedex/', views.moviedex, name='moviedex'),
-    path('options/save_game', views.save, name='save_game'),
-    path('options/load_game', views.load, name='load_game'),
+    path('options/save_game/', views.save, name='save_game'),
+    path('options/load_game/', views.load, name='load_game'),
     path('options/', views.option, name='options'),
     # path('', views.title_screen, name='index'),
 ]
