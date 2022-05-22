@@ -91,7 +91,7 @@ class Game:
                                'message': f'Monviemonster {"qwe"} found!<br>'
                                           f'{"Fight him!" if self._player_strength - 2 < 3 else "Run! Fly you fool!"}'}}
         if self._game_map[y_pos][x_pos] == self.POKEBALL:
-            poke_count = random.randint(0, 20)
+            poke_count = random.randint(10, 20)
             self._game_map[y_pos][x_pos] = 0
             self._movieballs_count += poke_count
             return {"action": {"type": "ball", 'message': f'Found {poke_count} movieballs!'}}
