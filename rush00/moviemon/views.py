@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import typing
 from .game import Game, game_storage, start_new_game
 
@@ -33,7 +33,7 @@ def worldmap(request, direction: typing.Optional[str] = None):
 
     return render(request, "worldmap.html", {
         'buttons': {'A': {'link': f'/battle/{monster_id}', 'active': monster_id is not False},
-                    'select': {'link': '/movindex'}, 'start': {'link': '/options'},
+                    'select': {'link': '/moviedex'}, 'start': {'link': '/options'},
                     'arrow_top': {'link': '/worldmap/up'}, 'arrow_left': {'link': '/worldmap/left'},
                     'arrow_right': {'link': '/worldmap/right'}, 'arrow_bottom': {'link': '/worldmap/bottom'},
                     },
@@ -42,15 +42,51 @@ def worldmap(request, direction: typing.Optional[str] = None):
     })
 
 
-def battle(request, moviemon_id: int):
+def battle(request, moviemon_id: str):
     pass
 
 
 def moviedex(request):
-    pass
+    direction = None
+
+    current_game = game_storage.get_current_game()
+    if request.method == "GET" and request.GET:
+        direction = request.GET.get("direction")
+    else:
+        current_game.moviedex_current = 0
+
+    try:
+        selected_pos = current_game.moviedex_current
+    except AttributeError:
+        current_game.moviedex_current = 0
+        selected_pos = 0
+
+    captured_movies = current_game.get_captured_movies()
+
+    if direction == 'down' and selected_pos < len(captured_movies) - 1:
+        selected_pos += 1
+        current_game.moviedex_current = selected_pos
+    if direction == 'up' and selected_pos > 0:
+        selected_pos -= 1
+        current_game.moviedex_current = selected_pos
+    selected_id = current_game.get_movie_id_by_pos(selected_pos)
+    movies_to_show = current_game.get_selected_previous_and_next_movie(selected_pos)
+
+    return render(request, "moviedex.html", {
+        'buttons': {'A': {'link': f'/detai/{selected_id}/', 'active': True},
+                    'select': {'link': '/worldmap'},
+                    'arrow_top': {'link': '/moviedex/up'},
+                    'arrow_bottom': {'link': '/moviedex/down'}
+                    },
+        'title': 'Moviedex',
+        'captured_movies': movies_to_show,
+        'selected': selected_id
+    })
 
 
-def detail(request, moviemon: int):
+def detail(request, moviemon: str):
+    if moviemon in ['up', 'down']:
+        return redirect(f'/moviedex?direction={moviemon}')
     pass
 
 

@@ -24,14 +24,14 @@ class Game:
         self._movieballs_count = movieballs_count
         self._moviemons: dict[str, dict] = moviemons
         self._enemies_count: int = 15
-        self._captured_movies = []
+        self._captured_movies = ["tt0329101", "tt0117342", "tt0810743"]
         self._game_map: typing.Optional[list[list[int]]] = None
         self._player_strength = 1
 
     def dump(self, game_name="current"):
         GameManager.dump(self, game_name)
 
-    def init_game_map(self):
+    def init_game_map(self) -> None:
         game_map = []
         for i in range(self._field_size):
             game_map.append([0 for _ in range(self._field_size)])
@@ -94,7 +94,7 @@ class Game:
                 "type": "monster", "monster_id": movie['imdbID'],
                 'message':
                     f'Monviemonster "{movie["Title"]}" found! '
-                    f'{"Fight him!" if self._player_strength + 3 > float(movie["imdbRating"]) else "Run! Fly you fool!"}'}}
+                    f'{"Fight him!" if self._player_strength + 3 > float(movie["imdbRating"]) else "Run! Fly you fool! It is too strong!"}'}}
         if self._game_map[y_pos][x_pos] == self.POKEBALL:
             poke_count = random.randint(10, 20)
             self._game_map[y_pos][x_pos] = 0
@@ -102,18 +102,48 @@ class Game:
             return {"action": {"type": "ball", 'message': f'Found {poke_count} movieballs!'}}
         return {}
 
-    def get_random_movie(self):
-        movie_key = random.choice(list(self._moviemons.keys()))
+    def get_random_movie(self) -> dict[str, any]:
+        free_movies = list(set(self._moviemons.keys()) - set(self._captured_movies))
+        movie_key = random.choice(free_movies)
         random_movie = self._moviemons[movie_key]
         return random_movie
 
-    def get_strength(self):
-        pass
+    def get_strength(self) -> int:
+        return self._player_strength
 
-    def get_movie(self):
-        pass
+    def get_movie(self, movie_id: str) -> dict[str, any]:
+        return self._moviemons[movie_id]
 
-    def save_game(self, savefile_id: int):
+    def get_movie_id_by_pos(self, position_id: int) -> typing.Optional[str]:
+        if position_id > len(self._captured_movies):
+            return
+        return self._captured_movies[position_id]
+
+    def get_selected_previous_and_next_movie(self, position_id):
+        captured_size = len(self._captured_movies)
+        res = []
+        if captured_size > 3:
+            movie_ids = []
+            movie_ids.extend(self._captured_movies[position_id - 1:position_id + 1])
+            if len(res) != 3:
+                if position_id == captured_size - 1:
+                    movie_ids.insert(0, self._captured_movies[position_id - 2])
+                elif position_id == 0:
+                    movie_ids.append(self._captured_movies[position_id + 2])
+            for movie_id in movie_ids:
+                res.append(self._moviemons[movie_id])
+        else:
+            for val in self._captured_movies:
+                res.append(self._moviemons[val])
+        return res
+
+    def get_captured_movies(self) -> list:
+        captured = []
+        for movie_id in self._captured_movies:
+            captured.append(self._moviemons[movie_id])
+        return captured
+
+    def save_game(self, savefile_id: int) -> None:
 
         if savefile_id == 1:
             filename = "slotA_{captured}_{total}"
@@ -126,7 +156,7 @@ class Game:
 
         GameManager.dump(self, filename)
 
-    def get_data_for_map(self):
+    def get_data_for_map(self) -> dict[str, any]:
         map_template = []
         for i, row in enumerate(self._game_map):
             new_row = []
