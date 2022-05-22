@@ -20,9 +20,10 @@ def main():
         try:
             data[film] = json.loads(res.text)
         except json.decoder.JSONDecodeError as e:
-            raise print(e)
+            return print(e)
+        data[film]["imdbRating"] = round(float(data[film]["imdbRating"]))
     return data
 
 
 if __name__ == "__main__":
-    main()
+    print(main())
