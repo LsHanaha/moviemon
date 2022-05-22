@@ -54,7 +54,7 @@ def battle(request, moviemon_id: str):
         luck = 90
     if 'throw' in request.path:
         if current_game._movieballs_count > 0:
-            if random.randint(0, 100) > luck:
+            if random.randint(1, 100) > luck:
                 battle_text = "Throw Failed! Try again!"
                 current_game._movieballs_count -= 1
             else:
