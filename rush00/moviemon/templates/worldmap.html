@@ -5,7 +5,17 @@
 {% block screen_content_left %}
     <div class="screen_content_left">
         <div class="worldmap_content_left" >
-
+            <div class="worldmap_content_left_title">
+                Monsters
+            </div>
+            <div class="worldmap_content_left_monsters">
+                Captured {{ map_data.captured }}
+            </div>
+            {% if action.type == 'monster' %}
+                <div class="worldmap_content_left_message">
+                    {{ action.message }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
@@ -24,7 +34,21 @@
 {% block screen_content_right %}
     <div class="screen_content_right">
         <div class="worldmap_content_right">
-
+            <div class="worldmap_content_right_title">
+                Player
+            </div>
+            <div class="worldmap_content_right_strength">
+                Strength <br> {{ map_data.player_strength }}
+            </div>
+            <div class="worldmap_content_right_ball">
+                <div class="worldmap_content_right_ball_i" style="background-image: url('{% static "images/poke.png"%}');"></div>
+                <div class="worldmap_content_right_ball_c"> {{ map_data.pokeballs }} </div>
+            </div>
+            {% if action.type == 'ball' %}
+                <div class="worldmap_content_right_message">
+                    {{ action.message }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -93,7 +93,7 @@ class Game:
         if self._game_map[y_pos][x_pos] == self.POKEBALL:
             poke_count = random.randint(0, 20)
             self._movieballs_count += poke_count
-            return {"action": {"type": "ball", 'count': poke_count, 'message': f'Found {poke_count} movieballs!'}}
+            return {"action": {"type": "ball", 'message': f'Found {poke_count} movieballs!'}}
         return {}
 
     def get_random_movie(self):

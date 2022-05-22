@@ -11,13 +11,12 @@ def title_screen(request):
     })
 
 
-def worldmap(request, direction: typing.Optional[str] = None, new_game: bool = False):
+def worldmap(request, direction: typing.Optional[str] = None):
 
     battle_active = False
     if request.method == "GET":
         # Start to create a new game for user
         if 'new_game' in request.path:
-            print("start new game\n\n")
             start_new_game()
 
     current_game: Game = game_storage.get_current_game()
