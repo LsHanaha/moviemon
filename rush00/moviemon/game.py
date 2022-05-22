@@ -12,7 +12,7 @@ class Game:
     MONSTER = 2
     POKEBALL = 3
 
-    _pokeballs_count = 25
+    _max_pokeballs_count = 25
 
     def __init__(self,
                  current_point: tuple[int, int],
@@ -26,6 +26,7 @@ class Game:
         self._balls_treasures_count = 20
         self._captured_movies = []
         self._game_map: typing.Optional[list[list[int]]] = None
+        self._player_strength = 1
 
     def dump(self, game_name="current"):
         GameManager.dump(self, game_name)
@@ -35,7 +36,7 @@ class Game:
         for i in range(self._field_size):
             game_map.append([0 for _ in range(self._field_size)])
         y_pos, x_pos = self._current_position
-        max_poke_count = self._pokeballs_count
+        max_poke_count = self._max_pokeballs_count
         max_enemy_count = self._enemies_count
         for i, row in enumerate(game_map):
             for j, col in enumerate(row):
@@ -83,14 +84,17 @@ class Game:
 
         return self.determine_action()
 
-    def determine_action(self):
+    def determine_action(self) -> dict:
         y_pos, x_pos = self._current_position
         if self._game_map[y_pos][x_pos] == self.MONSTER:
-            return {"action": {"type": "monster", "monster_data": {}}}
+            return {"action": {"type": "monster", "monster_data": {'id': 1, 'strength': '2'},
+                               'message': f'Monviemonster {"qwe"} found!<br>'
+                                          f'{"Fight him!" if self._player_strength - 2 < 3 else "Run! Fly you fool!"}'}}
         if self._game_map[y_pos][x_pos] == self.POKEBALL:
             poke_count = random.randint(0, 20)
             self._movieballs_count += poke_count
-            return {"action": {"type": "ball", 'count': poke_count}}
+            return {"action": {"type": "ball", 'count': poke_count, 'message': f'Found {poke_count} movieballs!'}}
+        return {}
 
     def get_random_movie(self):
         pass
@@ -114,29 +118,57 @@ class Game:
 
         GameManager.dump(self, filename)
 
+    def get_data_for_map(self):
+        return {
+            'map_data': {
+                'player_strength': self._player_strength,
+                'pokeballs': self._movieballs_count,
+                'captured': f"{len(self._captured_movies)} / {self._enemies_count}",
+                'field': self._game_map
+            }
+        }
+
 
 class GameManager:
 
+    def __init__(self, game=None):
+        self._current_game = game
+
+    def get_current_game(self) -> Game:
+        if self._current_game is None:
+            self._current_game = self.load()
+        return self._current_game
+
+    def set_current_game(self, game=None) -> None:
+        if self._current_game is None and game is None:
+            game = self.load()
+        self._current_game = game
+
     @classmethod
-    def load(cls, filename: str):
+    def load(cls, filename: str = "current"):
         filepath = os.path.join(django_settings.BASE_DIR, 'moviemon', filename)
         if not os.path.exists(filepath):
-            raise FileNotFoundError(f"File {filename} does not exist. "
-                                    f"Send your Gameboy to the local authorized center")
-        with open(filepath, 'r') as f:
+            with open(filepath, 'wb'):
+                pass
+        with open(filepath, 'rb') as f:
             game_instance = pickle.load(f)
         return game_instance
 
     @classmethod
     def dump(cls, game: Game, filename="current") -> None:
         filepath = os.path.join(django_settings.BASE_DIR, 'moviemon', filename)
-        with open(filepath, 'w') as f:
-            pickle.dump(game, f)
+        with open(filepath, 'wb') as f:
+            pickle.dump(game, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+game_storage = GameManager()
 
 
 def start_new_game():
     game = Game((random.randint(0, 15), random.randint(0, 15)), 15, {})
     game.init_game_map()
+    game_storage.set_current_game(game)
+    game.dump()
     return game
 
 
