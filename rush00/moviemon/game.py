@@ -4,6 +4,7 @@ import random
 import typing
 
 from django.conf import settings as django_settings
+from .imdb_api import collect_imdb_data
 
 
 class Game:
@@ -21,9 +22,8 @@ class Game:
         self._field_size = 15
         self._current_position = current_point
         self._movieballs_count = movieballs_count
-        self._moviemons = moviemons
-        self._enemies_count = 15
-        self._balls_treasures_count = 20
+        self._moviemons: dict[str, dict] = moviemons
+        self._enemies_count: int = 15
         self._captured_movies = []
         self._game_map: typing.Optional[list[list[int]]] = None
         self._player_strength = 1
@@ -89,9 +89,13 @@ class Game:
     def determine_action(self) -> dict:
         y_pos, x_pos = self._current_position
         if self._game_map[y_pos][x_pos] == self.MONSTER:
-            return {"action": {"type": "monster", "monster_data": {'id': 1, 'strength': '2'},
-                               'message': f'Monviemonster {"qwe"} found!<br>'
-                                          f'{"Fight him!" if self._player_strength - 2 < 3 else "Run! Fly you fool!"}'}}
+            movie = self.get_random_movie()
+            print(movie['imdbRating'])
+            return {"action": {
+                "type": "monster", "monster_data": {'id': 1, 'strength': '2'},
+                'message':
+                    f'Monviemonster "{movie["Title"]}" found! '
+                    f'{"Fight him!" if self._player_strength + 3 > float(movie["imdbRating"]) else "Run! Fly you fool!"}'}}
         if self._game_map[y_pos][x_pos] == self.POKEBALL:
             poke_count = random.randint(10, 20)
             self._game_map[y_pos][x_pos] = 0
@@ -100,7 +104,9 @@ class Game:
         return {}
 
     def get_random_movie(self):
-        pass
+        movie_key = random.choice(list(self._moviemons.keys()))
+        random_movie = self._moviemons[movie_key]
+        return random_movie
 
     def get_strength(self):
         pass
@@ -178,7 +184,8 @@ game_storage = GameManager()
 
 
 def start_new_game():
-    game = Game((random.randint(0, 15), random.randint(0, 15)), 15, {})
+    imdb_data = collect_imdb_data()
+    game = Game((random.randint(0, 15), random.randint(0, 15)), 15, imdb_data)
     game.init_game_map()
     game_storage.set_current_game(game)
     game.dump()
